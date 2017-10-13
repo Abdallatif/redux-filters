@@ -9,9 +9,9 @@ branches:
 notifications:
   email: false
 node_js:
-  - 4
+  - 7.10.0
 before_install:
-  - npm i -g npm@^3.0.0
+  - npm i -g npm@^5.4.2
 before_script:
   - npm prune
 script:
