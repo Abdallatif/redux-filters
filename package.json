@@ -19,6 +19,10 @@
     "filters",
     "bit"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Abdallatif/redux-filters.git"
+  },
   "scripts": {
     "commit": "git-cz",
     "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
