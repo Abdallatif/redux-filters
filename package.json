@@ -1,6 +1,6 @@
 {
   "name": "redux-filters",
-  "version": "0.0.0-semantically-released",
+  "version": "0.0.0-development",
   "description": "fast redux filters using bit operations and reselect memoization",
   "homepage": "https://github.com/Abdallatif/redux-filters",
   "author": {
@@ -65,7 +65,7 @@
     "nyc": "6.4.0",
     "prettier": "^1.7.4",
     "rimraf": "2.5.2",
-    "semantic-release": "^4.2.1",
+    "semantic-release": "^8.2.0",
     "webpack": "1.13.0"
   },
   "nyc": {
