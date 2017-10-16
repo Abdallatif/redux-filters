@@ -1,9 +1,11 @@
 import { expect } from 'chai';
-import { fromJS } from 'immutable';
-
 import { phones } from './fixtures';
 
 import {
+  filtersReducer,
+  selectFilteredDataIds,
+  selectFiltersStatus,
+  selectAllFilters,
   updateIdProp,
   addBitmaskFilterCategory,
   addBitmaskFilter,
@@ -15,36 +17,23 @@ import {
   resetFilters,
   clearFilters,
   clearData
-} from '../actions';
-
-import {
-  selectFilteredDataIds,
-  selectFiltersStatus,
-  selectAllFilters
-} from '../selectors';
-
-import rootReducer from '../';
+} from '../';
 
 const selectFilteredDataInvoked = selectFilteredDataIds();
 const selectFiltersStatusInvoked = selectFiltersStatus();
 const selectAllFiltersInvoked = selectAllFilters();
 
-const props = { root: [''] };
 let state;
 
 describe('Testing redux filters ', () => {
   before(() => {
-    state = fromJS({
-      id: 'id',
-      FILTERS: {},
-      DATA: {}
-    });
+    state = filtersReducer();
   });
 
   it('Should add features bitmask filter category', () => {
     const featuresFiltersCategory = () =>
       addBitmaskFilterCategory({ category: 'features', disjunctive: false });
-    state = rootReducer(state, featuresFiltersCategory());
+    state = filtersReducer(state, featuresFiltersCategory());
     const stateJS = state.toJS();
     expect(Object.keys(stateJS.FILTERS)).to.includes('features');
     expect(stateJS.FILTERS.features).to.deep.equal({
@@ -84,10 +73,10 @@ describe('Testing redux filters ', () => {
         predicate: `isWaterProof`
       });
 
-    state = rootReducer(state, hdrFilter());
-    state = rootReducer(state, dualCameraFilter());
-    state = rootReducer(state, touchFocusFilter());
-    state = rootReducer(state, waterProofFilter());
+    state = filtersReducer(state, hdrFilter());
+    state = filtersReducer(state, dualCameraFilter());
+    state = filtersReducer(state, touchFocusFilter());
+    state = filtersReducer(state, waterProofFilter());
 
     const stateJS = state.toJS();
     expect(Object.keys(stateJS.FILTERS.features.FILTERS_SET)).to.deep.equal([
@@ -99,7 +88,7 @@ describe('Testing redux filters ', () => {
   });
 
   it('Should select all filters', () => {
-    expect(selectAllFiltersInvoked(state, props).toJS()).to.deep.equal({
+    expect(selectAllFiltersInvoked(state).toJS()).to.deep.equal({
       features: ['hdr', 'dualCamera', 'touchFocus', 'waterProof']
     });
   });
@@ -107,15 +96,15 @@ describe('Testing redux filters ', () => {
   it('Should update features bitmask after activating hdr filter', () => {
     const activateHdrFilter = () =>
       activateFilter({ category: 'features', filterId: 'hdr' });
-    state = rootReducer(state, activateHdrFilter());
-    const filterStatus = selectFiltersStatusInvoked(state, props).toJS();
+    state = filtersReducer(state, activateHdrFilter());
+    const filterStatus = selectFiltersStatusInvoked(state).toJS();
     expect(filterStatus.features.hdr).to.equal('active');
   });
 
   it('Should update data', () => {
-    state = rootReducer(state, updateIdProp('phoneId'));
+    state = filtersReducer(state, updateIdProp('phoneId'));
     expect(state.get('id')).to.equal('phoneId');
-    state = rootReducer(state, updateData(phones));
+    state = filtersReducer(state, updateData(phones));
     const stateJS = state.toJS();
     expect(stateJS.DATA).to.deep.equal({
       A1905: {
@@ -132,23 +121,20 @@ describe('Testing redux filters ', () => {
 
   it('Should not update data', () => {
     const stateBeforeUpdate = state;
-    state = rootReducer(state, checkAndUpdateData(phones));
+    state = filtersReducer(state, checkAndUpdateData(phones));
     expect(stateBeforeUpdate).to.equal(state);
   });
 
   it('Should filter data', () => {
-    expect(selectFilteredDataInvoked(state, props).toJS()).to.deep.equal([
-      'D855',
-      'pixel2'
-    ]);
+    expect(selectFilteredDataInvoked(state).toJS()).to.deep.equal(['D855', 'pixel2']);
   });
 
   it('Should toggle filter', () => {
     const toggleHdrFilter = () => toggleFilter({ category: 'features', filterId: 'hdr' });
     const oldStateJS = state.toJS();
-    state = rootReducer(state, toggleHdrFilter());
-    selectFilteredDataInvoked(state, props);
-    state = rootReducer(state, toggleHdrFilter());
+    state = filtersReducer(state, toggleHdrFilter());
+    selectFilteredDataInvoked(state);
+    state = filtersReducer(state, toggleHdrFilter());
     const stateJS = state.toJS();
     expect(oldStateJS.FILTERS.features.bitmask).to.equal(
       stateJS.FILTERS.features.bitmask
@@ -156,7 +142,7 @@ describe('Testing redux filters ', () => {
   });
 
   it('Should return filters status', () => {
-    const filtersStatus = selectFiltersStatusInvoked(state, props).toJS();
+    const filtersStatus = selectFiltersStatusInvoked(state).toJS();
     expect(filtersStatus).to.deep.equal({
       features: {
         dualCamera: 'disabled',
@@ -170,8 +156,8 @@ describe('Testing redux filters ', () => {
   it('Should return all data after deactivate postpaid filter', () => {
     const deactivateHdrFilter = () =>
       deactivateFilter({ category: 'features', filterId: 'hdr' });
-    state = rootReducer(state, deactivateHdrFilter());
-    expect(selectFilteredDataInvoked(state, props).toJS()).to.deep.equal([
+    state = filtersReducer(state, deactivateHdrFilter());
+    expect(selectFilteredDataInvoked(state).toJS()).to.deep.equal([
       'A1905',
       'D855',
       'pixel2'
@@ -182,18 +168,18 @@ describe('Testing redux filters ', () => {
     const activateWaterProofFilter = () =>
       activateFilter({ category: 'features', filterId: 'waterProof' });
     const stateBeforeActivation = state;
-    state = rootReducer(state, activateWaterProofFilter());
-    state = rootReducer(state, resetFilters());
+    state = filtersReducer(state, activateWaterProofFilter());
+    state = filtersReducer(state, resetFilters());
     expect(stateBeforeActivation.toJS()).to.deep.equal(state.toJS());
   });
 
   it('Should delete all filters', () => {
-    state = rootReducer(state, clearFilters());
+    state = filtersReducer(state, clearFilters());
     expect(state.toJS().FILTERS).to.deep.equal({});
   });
 
   it('Should delete all data info', () => {
-    state = rootReducer(state, clearData());
+    state = filtersReducer(state, clearData());
     expect(state.toJS().DATA).to.deep.equal({});
   });
 });
