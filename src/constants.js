@@ -1,4 +1,3 @@
-export const BRANCH = 'FILTERS';
 export const FILTERS_BRANCH = 'FILTERS';
 export const FILTERS_SET_BRANCH = 'FILTERS_SET';
 export const DATA_BRANCH = 'DATA';

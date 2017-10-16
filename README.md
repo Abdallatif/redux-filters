@@ -1,4 +1,8 @@
-# redux-filters [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Codecov][codecov-image]][codecov-url]
+# redux-filters 
+[![NPM version][npm-image]][npm-url] 
+[![Build Status][travis-image]][travis-url]
+[![Dependency Status][daviddm-image]][daviddm-url]
+[![Codecov][codecov-image]][codecov-url]
 > fast redux filters using bit operations and reselect memoization
 
 ## Installation
@@ -9,8 +13,78 @@ $ npm install --save redux-filters
 
 ## Usage
 
-soon
+### Bitmask Filters
+Until now this is the only type of filters you can add, more are coming.
 
+You can use this type of filter if you have a `predicate` you want to check on every filterable item. Like if you have an array of objects (phones) like the following:
+
+```js
+export const phones = [
+  {
+    phoneId: 'A1905',
+    features: ['Apple Pay', 'Dual cameras'],
+    isWaterProof: true
+  },
+  {
+    phoneId: 'D855',
+    features: ['touch focus', 'HDR'],
+    isWaterProof: false
+  },
+  {
+    phoneId: 'pixel2',
+    features: ['touch focus', 'panorama', 'Auto HDR'],
+    isWaterProof: true
+  }
+];
+```
+
+So if want to add a water proof filter, the predicate would be `isWaterProof`.
+
+For an `HDR` filter, the predicate would be `contains(features, "HDR")`.
+
+> Check [filtreX](https://github.com/joewalnes/filtrex) to learn more what predicate you could write.
+
+> We copied filtreX code and generated the parser, so the building time is better.
+
+#### How to add bitmask filters
+After you add filterReducer to your state reducers, you should add the category for your filters first.
+```js
+import { addBitmaskFilter } from 'redux-filters';
+addBitmaskFilterCategory({ category: 'features', disjunctive: false });
+```
+Here we added a new category called features which are conjunctive, which means for an item to be returned it should passed all the filters in this category.
+
+Next we want to add water proof filter:
+```js
+import { addBitmaskFilter } from 'redux-filters';
+addBitmaskFilter({
+  category: 'features',
+  id: 'waterProof',
+  predicate: `isWaterProof`
+});
+```
+
+#### Change filters state
+When a filter is added, it's deactivated by default.
+```js
+import {
+  activateFilter,
+  deactivateFilter,
+  toggleFilter,
+  resetFilters,
+  clearFilters
+} from 'redux-filters';
+// Activate water proof filter
+activateFilter({ category: 'features', filterId: 'waterProof' });
+// Deactivate water proof filter
+deactivateFilter({ category: 'features', filterId: 'waterProof' });
+// As the name suggest toggle filter state
+toggleFilter({ category: 'features', filterId: 'waterProof' });
+// Reset all filters to deactivated
+resetFilters();
+// Probably you don't need this, but you could use it to delete all filters
+clearFilters();
+```
 ## License
 
 MIT © [Abdallatif]()

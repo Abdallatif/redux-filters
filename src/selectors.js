@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 import { fromJS } from 'immutable';
 import {
-  BRANCH,
   DATA_BRANCH,
   FILTERS_BRANCH,
   FILTERS_SET_BRANCH,
@@ -13,8 +12,9 @@ import {
 } from './constants';
 
 import { qualifyMask } from './bitops';
-const selectRootDomain = () => (state, { root }) =>
-  state.getIn([...root, BRANCH]) || state;
+const selectRootDomain = () => (state, props) =>
+  // `filtersRootBranch` is where reducer live
+  (props && props.filtersRootBranch && state.getIn(props.filtersRootBranch)) || state;
 
 const selectFiltersDomain = () =>
   createSelector(selectRootDomain(), root => root.get(FILTERS_BRANCH));
