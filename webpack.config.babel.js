@@ -7,7 +7,7 @@ export default {
   output: {
     path: join(__dirname, 'dist'),
     libraryTarget: 'umd',
-    library: 'starWarsNames'
+    library: 'redux-filters'
   },
   devtool: 'source-map',
   module: {
