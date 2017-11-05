@@ -13,6 +13,9 @@
     "README.md"
   ],
   "main": "dist/index.js",
+  "release": {
+    "branch": "master"
+  },
   "keywords": [
     "redux",
     "memoized",
