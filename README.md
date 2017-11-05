@@ -75,11 +75,11 @@ import {
   clearFilters
 } from 'redux-filters';
 // Activate water proof filter
-activateFilter({ category: 'features', filterId: 'waterProof' });
+activateFilter({ category: 'features', id: 'waterProof' });
 // Deactivate water proof filter
-deactivateFilter({ category: 'features', filterId: 'waterProof' });
+deactivateFilter({ category: 'features', id: 'waterProof' });
 // As the name suggest toggle filter state
-toggleFilter({ category: 'features', filterId: 'waterProof' });
+toggleFilter({ category: 'features', id: 'waterProof' });
 // Reset all filters to deactivated
 resetFilters();
 // Probably you don't need this, but you could use it to delete all filters

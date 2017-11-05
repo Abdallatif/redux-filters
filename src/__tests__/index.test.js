@@ -94,8 +94,7 @@ describe('Testing redux filters ', () => {
   });
 
   it('Should update features bitmask after activating hdr filter', () => {
-    const activateHdrFilter = () =>
-      activateFilter({ category: 'features', filterId: 'hdr' });
+    const activateHdrFilter = () => activateFilter({ category: 'features', id: 'hdr' });
     state = filtersReducer(state, activateHdrFilter());
     const filterStatus = selectFiltersStatusInvoked(state).toJS();
     expect(filterStatus.features.hdr).to.equal('active');
@@ -130,7 +129,7 @@ describe('Testing redux filters ', () => {
   });
 
   it('Should toggle filter', () => {
-    const toggleHdrFilter = () => toggleFilter({ category: 'features', filterId: 'hdr' });
+    const toggleHdrFilter = () => toggleFilter({ category: 'features', id: 'hdr' });
     const oldStateJS = state.toJS();
     state = filtersReducer(state, toggleHdrFilter());
     selectFilteredDataInvoked(state);
@@ -155,7 +154,7 @@ describe('Testing redux filters ', () => {
 
   it('Should return all data after deactivate postpaid filter', () => {
     const deactivateHdrFilter = () =>
-      deactivateFilter({ category: 'features', filterId: 'hdr' });
+      deactivateFilter({ category: 'features', id: 'hdr' });
     state = filtersReducer(state, deactivateHdrFilter());
     expect(selectFilteredDataInvoked(state).toJS()).to.deep.equal([
       'A1905',
@@ -166,7 +165,7 @@ describe('Testing redux filters ', () => {
 
   it('Should reset all filters', () => {
     const activateWaterProofFilter = () =>
-      activateFilter({ category: 'features', filterId: 'waterProof' });
+      activateFilter({ category: 'features', id: 'waterProof' });
     const stateBeforeActivation = state;
     state = filtersReducer(state, activateWaterProofFilter());
     state = filtersReducer(state, resetFilters());

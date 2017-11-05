@@ -30,17 +30,12 @@ const initialState = {
   [DATA_BRANCH]: {}
 };
 
-export const alterBitmaskFilterState = (
-  state,
-  filterCategory,
-  filterId,
-  func = toggle
-) => {
+export const alterBitmaskFilterState = (state, filterCategory, id, func = toggle) => {
   const filterValue = state.getIn([
     FILTERS_BRANCH,
     filterCategory,
     FILTERS_SET_BRANCH,
-    filterId,
+    id,
     'value'
   ]);
   const categoryBitmask = func(
@@ -73,12 +68,12 @@ const filtersReducers = {
       })
     );
   },
-  [toggleFilter]: (state, { category, filterId }) =>
-    alterBitmaskFilterState(state, category, filterId),
-  [activateFilter]: (state, { category, filterId }) =>
-    alterBitmaskFilterState(state, category, filterId, activate),
-  [deactivateFilter]: (state, { category, filterId }) =>
-    alterBitmaskFilterState(state, category, filterId, deactivate),
+  [toggleFilter]: (state, { category, id }) =>
+    alterBitmaskFilterState(state, category, id),
+  [activateFilter]: (state, { category, id }) =>
+    alterBitmaskFilterState(state, category, id, activate),
+  [deactivateFilter]: (state, { category, id }) =>
+    alterBitmaskFilterState(state, category, id, deactivate),
   [resetFilters]: state =>
     state.set(
       FILTERS_BRANCH,
