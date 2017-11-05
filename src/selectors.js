@@ -117,12 +117,12 @@ export const selectFiltersStatus = () =>
       const originalLength = originalData.size;
       const filteredLength = filteredData.size;
       return originalCount.map((filters, category) =>
-        filters.map((count, filterId) =>
+        filters.map((count, id) =>
           determineFilterState(
-            active.hasIn([category, filterId]),
+            active.hasIn([category, id]),
             count,
             originalLength,
-            filteredCount.getIn([category, filterId]),
+            filteredCount.getIn([category, id]),
             filteredLength
           )
         )
