@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { qualifyMask } from 'bit-ops';
 import { fromJS } from 'immutable';
 import {
   DATA_BRANCH,
@@ -11,7 +12,6 @@ import {
   FILTER_MAYBE_DISABLED
 } from './constants';
 
-import { qualifyMask } from './bitops';
 const selectRootDomain = () => (state, props) =>
   // `filtersRootBranch` is where reducer live
   (props && props.filtersRootBranch && state.getIn(props.filtersRootBranch)) || state;

@@ -6,7 +6,7 @@ import {
   activateFilter as activate,
   deactivateFilter as deactivate,
   toggleFilter as toggle
-} from './bitops';
+} from 'bit-ops';
 
 import {
   updateIdProp,

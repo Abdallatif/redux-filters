@@ -43,6 +43,7 @@
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "dependencies": {
+    "bit-ops": "^1.0.4",
     "immutable": "^3.8.2",
     "lodash": "^4.17.4",
     "redux-act": "^1.4.1",
@@ -75,7 +76,6 @@
   "nyc": {
     "exclude": [
       "**/filterx/**",
-      "**/bitops/**",
       "**/__tests__/**"
     ]
   },
