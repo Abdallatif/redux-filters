@@ -20,7 +20,7 @@ export const phones = [
     name: 'Samsung Galaxy Note 8',
     rating: 9,
     price: 300,
-    features: ['touch focus', 'panorama', 'Auto HDR'],
+    features: ['touch focus', 'panorama', 'HDR'],
     isWaterProof: true
   }
 ];
