@@ -49,21 +49,21 @@ describe('Testing redux filters ', () => {
       addBitmaskFilter({
         category: 'features',
         id: 'hdr',
-        predicate: `contains(features, "HDR")`
+        predicate: `features.includes("HDR")`
       });
 
     const dualCameraFilter = () =>
       addBitmaskFilter({
         category: 'features',
         id: 'dualCamera',
-        predicate: `contains(features, "Dual cameras")`
+        predicate: `features.includes("Dual cameras")`
       });
 
     const touchFocusFilter = () =>
       addBitmaskFilter({
         category: 'features',
         id: 'touchFocus',
-        predicate: `contains(features, "touch focus")`
+        predicate: `features.includes("touch focus")`
       });
 
     const waterProofFilter = () =>

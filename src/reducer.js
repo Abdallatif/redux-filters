@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 import { createReducer } from 'redux-act';
-import compile from './filterx';
+import safeEval from 'notevil';
 
 import {
   activateFilter as activate,
@@ -85,8 +85,10 @@ const filtersReducers = {
 const calculateFilterValues = (filters, item) => {
   return filters.reduce((filtersBitmask, category, key) => {
     filtersBitmask[key] = category.get(FILTERS_SET_BRANCH).reduce((value, filter) => {
-      const filterFunc = compile(filter.get('predicate'));
-      if (filterFunc(item)) return value | filter.get('value');
+      const predicate = filter.get('predicate');
+      if (safeEval(predicate, item)) {
+        return value | filter.get('value');
+      }
       return value;
     }, 0);
     return filtersBitmask;

@@ -45,7 +45,7 @@
   "dependencies": {
     "bit-ops": "^1.0.4",
     "immutable": "^3.8.2",
-    "lodash": "^4.17.4",
+    "notevil": "^1.1.0",
     "redux-act": "^1.4.1",
     "reselect": "^3.0.1"
   },
@@ -72,12 +72,6 @@
     "rimraf": "2.5.2",
     "semantic-release": "^8.2.0",
     "webpack": "1.13.0"
-  },
-  "nyc": {
-    "exclude": [
-      "**/filterx/**",
-      "**/__tests__/**"
-    ]
   },
   "config": {
     "ghooks": {
